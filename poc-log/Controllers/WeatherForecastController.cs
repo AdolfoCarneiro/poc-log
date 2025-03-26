@@ -16,6 +16,7 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     [HttpGet(Name = "GetWeatherForecast")]
     public int Get()
     {
+        _logger.LogInformation("request no GetWeatherForecast");
         var response = _anyService.DoAnithing();
         return response;
     }
