@@ -1,17 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.Extensions.Logging;
 
 namespace Application
 {
-    public class AnyService : IAnyService
+    public class AnyService(ILogger<AnyService> logger, 
+        TelemetryClient telemetryClient) : IAnyService
     {
-        private readonly ILogger<AnyService> _logger;
-        public AnyService(ILogger<AnyService> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<AnyService> _logger = logger;
+        private readonly TelemetryClient _telemetryClient = telemetryClient;
+
         public int DoAnithing()
         {
-            _logger.LogInformation("Chamando DoAnithing");
+            _telemetryClient.TrackTrace("Chamando DoAnithing");
             var a = 1;
             var b = 2;
             var c = a + b;
