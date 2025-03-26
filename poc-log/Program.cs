@@ -1,5 +1,8 @@
 
 using Application;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace poc_log
 {
@@ -9,12 +12,15 @@ namespace poc_log
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddApplicationInsightsTelemetry();
+
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IAnyService, AnyService>();
+
 
             var app = builder.Build();
 
