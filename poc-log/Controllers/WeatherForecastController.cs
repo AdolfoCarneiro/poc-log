@@ -14,8 +14,9 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     private readonly IAnyService _anyService = anyService;
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<int> Get()
+    public int Get()
     {
-        var a = _anyService.DoAnithing();
+        var response = _anyService.DoAnithing();
+        return response;
     }
 }
