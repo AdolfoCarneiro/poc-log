@@ -13,6 +13,7 @@ namespace poc_log
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddApplicationInsightsTelemetry();
+            builder.Logging.AddApplicationInsights();
 
             builder.Services.AddControllers();
 
