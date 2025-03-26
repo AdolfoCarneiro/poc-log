@@ -3,6 +3,7 @@ using Application;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 namespace poc_log
 {
@@ -12,37 +13,26 @@ namespace poc_log
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
+            // Add services to the container.
+            builder.Services.AddScoped<IAnyService, AnyService>();
+            builder.Services.AddApplicationInsightsTelemetry();
+            builder.Services.AddLogging(builder => builder.AddApplicationInsights());
+            builder.Logging.AddApplicationInsights() ;
 
             builder.Services.AddControllers();
-
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IAnyService, AnyService>();
-
-            builder.Services.AddApplicationInsightsTelemetry();
-            builder.Logging.AddApplicationInsights();
-            builder.Logging.AddConsole();
-            builder.Services.AddLogging(logBuilder =>
-            {
-                logBuilder.AddConsole();
-                logBuilder.SetMinimumLevel(LogLevel.Information);
-                logBuilder.AddApplicationInsights(
-                    configureTelemetryConfiguration: (config) => config.ConnectionString = "InstrumentationKey=baedcb7c-18c2-4e7d-9c6a-62e12bbad35f;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=c10c057c-f7ee-4f00-b30e-672467ef84f7",
-                    configureApplicationInsightsLoggerOptions: (options) => { }
-                    );
-            });
-
             var app = builder.Build();
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
 
+
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            
             app.UseHttpsRedirection();
-            //app.UseRouting();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
